@@ -31,15 +31,15 @@ st.set_page_config(
 model = YOLO("C:/Users/SUJAN K S/runs/segment/train21/weights/best.pt")
 
 # ── Twilio ──────────────────────────────────────────────────────────
-TWILIO_ACCOUNT_SID = "AAC94f37bde61b10069660bd375e290690c"
-TWILIO_AUTH_TOKEN  = "2ab0ee0d11a04043ca1ca95bd542abc5"
-TWILIO_FROM_NUMBER = "+17752274509"
-TWILIO_TO_NUMBER   ="+919108262847"
+TWILIO_ACCOUNT_SID = "WRITE_YOUR_TWILIO_CODE"
+TWILIO_AUTH_TOKEN  = "TWILIO_AUTHER_TOKEN"
+TWILIO_FROM_NUMBER = "+17_TWILIO_NUMBER"
+TWILIO_TO_NUMBER   ="+91YOUR_NUMBER"
 
 # ── SendGrid ─────────────────────────────────────────────────────────
 SENDGRID_API_KEY   = "YOUR_SENDGRID_API_KEY"
-ALERT_FROM_EMAIL   = "sujanksgowda2005@gmail.com"
-ALERT_TO_EMAIL     = "nnm23am065@nmamit.in"
+ALERT_FROM_EMAIL   = "YOUR_MAIL(SENDER@GMAIL.COM)"
+ALERT_TO_EMAIL     = "RECICVER_MAIL(RECIVER@GAMIL.COM)"
 
 
 # ─────────────────────────────────────────────
