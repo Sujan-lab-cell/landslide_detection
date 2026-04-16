@@ -13,7 +13,6 @@
 </p>
 
 ---
-
 ## 📋 Table of Contents
 
 1. [Project Overview](#-project-overview)
@@ -64,7 +63,7 @@ The model was trained on a custom landslide segmentation dataset assembled from 
 > ⚠️ **Note:** The initial raw collection comprised **327 images**. After augmentation (3× outputs per training example), the effective dataset grew to **821 annotated images**.
 
 **Dataset sources and further details:**  
-🔗 [Roboflow Landslide Segmentation Dataset](https://universe.roboflow.com/) *(search "landslide segmentation")*  
+🔗 [Roboflow Landslide Segmentation Dataset](https://universe.roboflow.com/sujans-workspace/landslides-2/dataset/3) 
 🔗 [Kaggle Landslide4Sense](https://www.kaggle.com/datasets/saurabhshahane/landslide4sense)  
 🔗 [NASA Landslide Inventory](https://gpm.nasa.gov/landslides/index.html)
 
