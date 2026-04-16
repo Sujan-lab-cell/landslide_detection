@@ -146,7 +146,7 @@ Training and validation metrics were logged across all 100 epochs using Ultralyt
 
 ### Training Graphs
 
-> 📊 *Place your training results image here — typically found at `runs/segment/train21/results.png`*
+> 📊 *Place your training results image here — typically found at `results.png`*
 
 ```
 runs/
