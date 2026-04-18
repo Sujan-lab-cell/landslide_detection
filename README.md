@@ -160,7 +160,7 @@ runs/
 
 **To add your training graph:**
 ```markdown
-![Training Results](runs/segment/train21/results.png)
+![Training Results](results.png)
 ```
 
 Key observations from training:
