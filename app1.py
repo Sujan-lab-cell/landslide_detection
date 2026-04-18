@@ -322,7 +322,11 @@ section[data-testid="stSidebar"] *{color:#e8eaf0!important;}
     color: #ff5a3c !important;
 }
 
-iframe { border-radius: 14px !important; border: 1px solid #1e2d45 !important; }
+iframe {
+  border-radius: 14px !important;
+  border: 1px solid #1e2d45 !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4) !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
