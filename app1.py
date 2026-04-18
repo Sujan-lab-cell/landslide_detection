@@ -2,16 +2,17 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import streamlit.components.v1 as components
-import pyttsx3
+# import pyttsx3
 import os
 import cv2
 import tempfile
 import numpy as np
 import folium
 from streamlit_folium import st_folium
-from twilio.rest import Client as TwilioClient
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
+# Twilio-based alert system is implemented locally but disabled in cloud deployment due to external API dependency
+# from twilio.rest import Client as TwilioClient 
+#from sendgrid import SendGridAPIClient
+# from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
 import base64
 from database import save_landslide
 import pandas as pd
@@ -31,26 +32,26 @@ st.set_page_config(
 model = YOLO("best.pt")
 
 # ── Twilio ──────────────────────────────────────────────────────────
-TWILIO_ACCOUNT_SID = "WRITE_YOUR_TWILIO_CODE"
-TWILIO_AUTH_TOKEN  = "TWILIO_AUTHER_TOKEN"
-TWILIO_FROM_NUMBER = "+17_TWILIO_NUMBER"
-TWILIO_TO_NUMBER   ="+91YOUR_NUMBER"
+#TWILIO_ACCOUNT_SID = "WRITE_YOUR_TWILIO_CODE"
+#TWILIO_AUTH_TOKEN  = "TWILIO_AUTHER_TOKEN"
+#TWILIO_FROM_NUMBER = "+17_TWILIO_NUMBER"
+#TWILIO_TO_NUMBER   ="+91YOUR_NUMBER"
 
 # ── SendGrid ─────────────────────────────────────────────────────────
-SENDGRID_API_KEY   = "YOUR_SENDGRID_API_KEY"
-ALERT_FROM_EMAIL   = "YOUR_MAIL(SENDER@GMAIL.COM)"
-ALERT_TO_EMAIL     = "RECICVER_MAIL(RECIVER@GAMIL.COM)"
+#SENDGRID_API_KEY   = "YOUR_SENDGRID_API_KEY"
+#ALERT_FROM_EMAIL   = "YOUR_MAIL(SENDER@GMAIL.COM)"
+#ALERT_TO_EMAIL     = "RECICVER_MAIL(RECIVER@GAMIL.COM)"
 
 
 # ─────────────────────────────────────────────
 # HELPER FUNCTIONS (original)
 # ─────────────────────────────────────────────
-def speak_alert(message):
-    engine = pyttsx3.init()
-    engine.setProperty('rate', 170)
-    engine.setProperty('volume', 1.0)
-    engine.save_to_file(message, "alert.mp3")
-    engine.runAndWait()
+#def speak_alert(message):
+    #engine = pyttsx3.init()
+    # engine.setProperty('rate', 170)
+    # engine.setProperty('volume', 1.0)
+    # engine.save_to_file(message, "alert.mp3")
+    # engine.runAndWait()
 
 def set_background(state: str):
     color_map = {"danger": "#1a0505", "safe": "#031a09", "none": "#0a0e1a"}
@@ -71,70 +72,70 @@ def set_background(state: str):
 # NEW FEATURE FUNCTIONS
 # ─────────────────────────────────────────────
 
-def send_sms_alert(confidence_percent: int, location_name: str = "Unknown Location") -> bool:
-    try:
-        client = TwilioClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        body = (
-            f"🚨 GeoSentinel ALERT\n"
-            f"Landslide detected at {location_name}.\n"
-            f"Confidence: {confidence_percent}%\n"
-            f"Risk Level: HIGH\n"
-            f"Immediate evacuation required.\n"
-            f"Emergency: 108 | NDMA: 1078"
-        )
-        msg = client.messages.create(body=body, from_=TWILIO_FROM_NUMBER, to=TWILIO_TO_NUMBER)
-        return msg.sid is not None
-    except Exception as e:
-        st.error(f"SMS failed: {e}")
-        return False
+# def send_sms_alert(confidence_percent: int, location_name: str = "Unknown Location") -> bool:
+#     try:
+#         client = TwilioClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+#         body = (
+#             f"🚨 GeoSentinel ALERT\n"
+#             f"Landslide detected at {location_name}.\n"
+#             f"Confidence: {confidence_percent}%\n"
+#             f"Risk Level: HIGH\n"
+#             f"Immediate evacuation required.\n"
+#             f"Emergency: 108 | NDMA: 1078"
+#         )
+#         msg = client.messages.create(body=body, from_=TWILIO_FROM_NUMBER, to=TWILIO_TO_NUMBER)
+#         return msg.sid is not None
+#     except Exception as e:
+#         st.error(f"SMS failed: {e}")
+#         return False
 
 
-def send_email_alert(confidence_percent: int, location_name: str = "Unknown", annotated_path: str = None) -> bool:
-    html_body = f"""
-    <html><body style="background:#0a0e1a;color:#e8eaf0;font-family:sans-serif;padding:2rem;">
-    <div style="max-width:600px;margin:auto;background:#111827;border-radius:16px;overflow:hidden;border:1px solid #2a3a5c;">
-        <div style="background:linear-gradient(135deg,#ff5a3c,#ff9a3c);padding:1.5rem 2rem;">
-            <h1 style="margin:0;font-size:1.4rem;color:#fff;">🚨 GeoSentinel — Landslide Detected</h1>
-        </div>
-        <div style="padding:2rem;">
-            <p style="color:#f87171;">Landslide at <b>{location_name}</b> — Confidence: <b>{confidence_percent}%</b></p>
-            <table style="width:100%;border-collapse:collapse;margin:1.5rem 0;">
-                <tr style="background:#1e2d45;"><td style="padding:0.6rem 1rem;color:#7a8399;">Confidence</td><td style="padding:0.6rem 1rem;color:#ff5a3c;font-weight:bold;">{confidence_percent}%</td></tr>
-                <tr><td style="padding:0.6rem 1rem;color:#7a8399;">Risk Level</td><td style="padding:0.6rem 1rem;color:#ef4444;font-weight:bold;">HIGH</td></tr>
-                <tr style="background:#1e2d45;"><td style="padding:0.6rem 1rem;color:#7a8399;">Location</td><td style="padding:0.6rem 1rem;color:#e8eaf0;">{location_name}</td></tr>
-            </table>
-            <div style="background:#1a0808;border-left:4px solid #ef4444;padding:1rem 1.5rem;border-radius:8px;">
-                <b style="color:#fca5a5;">Actions Required:</b>
-                <ul style="color:#f87171;margin:0.5rem 0;padding-left:1.2rem;">
-                    <li>Evacuate slopes and valleys immediately</li>
-                    <li>Alert local disaster management authorities</li>
-                    <li>NDMA: 1078 | Helpline: 108 | Police: 100</li>
-                </ul>
-            </div>
-            <p style="color:#3a4a60;font-size:0.75rem;margin-top:2rem;">Auto-generated by GeoSentinel AI. Annotated image attached.</p>
-        </div>
-    </div></body></html>
-    """
-    message = Mail(
-        from_email=ALERT_FROM_EMAIL,
-        to_emails=ALERT_TO_EMAIL,
-        subject=f"🚨 GeoSentinel ALERT — Landslide ({confidence_percent}% confidence)",
-        html_content=html_body
-    )
-    if annotated_path and os.path.exists(annotated_path):
-        with open(annotated_path, "rb") as f:
-            encoded = base64.b64encode(f.read()).decode()
-        message.attachment = Attachment(
-            FileContent(encoded), FileName("prediction.jpg"),
-            FileType("image/jpeg"), Disposition("attachment")
-        )
-    try:
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
-        r = sg.send(message)
-        return r.status_code in (200, 202)
-    except Exception as e:
-        st.error(f"Email failed: {e}")
-        return False
+# #def send_email_alert(confidence_percent: int, location_name: str = "Unknown", annotated_path: str = None) -> bool:
+#     html_body = f"""
+#     <html><body style="background:#0a0e1a;color:#e8eaf0;font-family:sans-serif;padding:2rem;">
+#     <div style="max-width:600px;margin:auto;background:#111827;border-radius:16px;overflow:hidden;border:1px solid #2a3a5c;">
+#         <div style="background:linear-gradient(135deg,#ff5a3c,#ff9a3c);padding:1.5rem 2rem;">
+#             <h1 style="margin:0;font-size:1.4rem;color:#fff;">🚨 GeoSentinel — Landslide Detected</h1>
+#         </div>
+#         <div style="padding:2rem;">
+#             <p style="color:#f87171;">Landslide at <b>{location_name}</b> — Confidence: <b>{confidence_percent}%</b></p>
+#             <table style="width:100%;border-collapse:collapse;margin:1.5rem 0;">
+#                 <tr style="background:#1e2d45;"><td style="padding:0.6rem 1rem;color:#7a8399;">Confidence</td><td style="padding:0.6rem 1rem;color:#ff5a3c;font-weight:bold;">{confidence_percent}%</td></tr>
+#                 <tr><td style="padding:0.6rem 1rem;color:#7a8399;">Risk Level</td><td style="padding:0.6rem 1rem;color:#ef4444;font-weight:bold;">HIGH</td></tr>
+#                 <tr style="background:#1e2d45;"><td style="padding:0.6rem 1rem;color:#7a8399;">Location</td><td style="padding:0.6rem 1rem;color:#e8eaf0;">{location_name}</td></tr>
+#             </table>
+#             <div style="background:#1a0808;border-left:4px solid #ef4444;padding:1rem 1.5rem;border-radius:8px;">
+#                 <b style="color:#fca5a5;">Actions Required:</b>
+#                 <ul style="color:#f87171;margin:0.5rem 0;padding-left:1.2rem;">
+#                     <li>Evacuate slopes and valleys immediately</li>
+#                     <li>Alert local disaster management authorities</li>
+#                     <li>NDMA: 1078 | Helpline: 108 | Police: 100</li>
+#                 </ul>
+#             </div>
+#             <p style="color:#3a4a60;font-size:0.75rem;margin-top:2rem;">Auto-generated by GeoSentinel AI. Annotated image attached.</p>
+#         </div>
+#     </div></body></html>
+#     """
+#     message = Mail(
+#         from_email=ALERT_FROM_EMAIL,
+#         to_emails=ALERT_TO_EMAIL,
+#         subject=f"🚨 GeoSentinel ALERT — Landslide ({confidence_percent}% confidence)",
+#         html_content=html_body
+#     )
+#     if annotated_path and os.path.exists(annotated_path):
+#         with open(annotated_path, "rb") as f:
+#             encoded = base64.b64encode(f.read()).decode()
+#         message.attachment = Attachment(
+#             FileContent(encoded), FileName("prediction.jpg"),
+#             FileType("image/jpeg"), Disposition("attachment")
+#         )
+#     try:
+#         sg = SendGridAPIClient(SENDGRID_API_KEY)
+#         r = sg.send(message)
+#         return r.status_code in (200, 202)
+#     except Exception as e:
+#         st.error(f"Email failed: {e}")
+#         return False
 
 
 def analyze_video(video_path: str, conf_threshold: float = 0.5, frame_skip: int = 5) -> dict:
