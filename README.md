@@ -184,15 +184,33 @@ Key observations from training:
 
 ![Confusion Matrix](confusion_matrix.png)
 
+- The model correctly detected **69 landslides (True Positives)**  
+- It misclassified **14 landslides as background (False Negatives)**  
+- It wrongly predicted **12 background regions as landslides (False Positives)**  
+- True negatives are very low, likely due to fewer background-only samples  
+
+👉 Overall: The model detects landslides well but can still confuse background regions.
+
 ## 📉 Precision-Recall Curve
 
 ![PR Curve](pr_curve.png)
+
+
+- The model achieves **mAP@0.5 ≈ 0.73**, indicating good detection performance  
+- High precision at lower recall → predictions are reliable  
+- Precision drops as recall increases → some false detections at higher sensitivity  
+
+👉 Overall: The model balances accuracy and detection capability effectively.
 
 ## 📈 F1-Score Curve
 
 ![F1 Curve](mask_f1_curve.png)
 
+- Peak F1 score ≈ **0.74 at confidence ~0.45**  
+- Indicates the best balance between precision and recall  
+- Performance drops at very high confidence → fewer detections  
 
+👉 Optimal confidence threshold for deployment: **~0.45**
 
 ## 🖼️ Detection Results
 
