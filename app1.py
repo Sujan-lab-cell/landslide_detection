@@ -28,7 +28,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-model = YOLO("C:/Users/SUJAN K S/runs/segment/train21/weights/best.pt")
+model = YOLO("best.pt")
 
 # ── Twilio ──────────────────────────────────────────────────────────
 TWILIO_ACCOUNT_SID = "WRITE_YOUR_TWILIO_CODE"
