@@ -216,15 +216,15 @@ Key observations from training:
 
 Sample predictions on the test set showing the segmentation masks overlaid on landslide regions.
 
-> 📷 *Add detection result images from `runs/segment/train21/val_batch0_pred.jpg` etc.:*
+![Detection Result 1](mode_prediction.png)
+![Detection Result 2](NO_LANDSLIDE.png)
 
-```markdown
-![Detection Result 1](runs/segment/train21/val_batch0_pred.jpg)
-![Detection Result 2](runs/segment/train21/val_batch1_pred.jpg)
-```
+The model demonstrates effective landslide detection and segmentation on test images. 
 
-The model correctly segments the landslide polygon regions with clearly defined masks, and rejects stable terrain as safe.
+- In the first example, the model accurately identifies the landslide region and generates a well-defined segmentation mask with a confidence score of 0.83, closely matching the affected area.
+- In the second example, the model correctly recognizes stable terrain and does not produce any false detections, indicating good generalization.
 
+Overall, the results show that the model can reliably distinguish between landslide and non-landslide regions while maintaining precise boundary segmentation.
 ---
 
 ## 🚀 How It Works & UI
