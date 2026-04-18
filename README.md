@@ -302,9 +302,13 @@ numpy
 ```
 
 ---
----
+### ⚠️ Failure Condition: Dataset Bias
 
----
+The model was initially trained primarily on landslide images, which caused a bias toward predicting landslides even in non-landslide regions. This resulted in increased false positives and very low true negative values.
+
+### ✅ Solution
+
+To overcome this, additional background (non-landslide) images were included in the dataset. This helped the model learn the distinction between landslide and normal terrain, improving overall prediction reliability.
 
 ## 🌐 Real-World Use Case
 
