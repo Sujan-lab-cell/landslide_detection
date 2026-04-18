@@ -190,7 +190,7 @@ Key observations from training:
 
 ## 📈 F1-Score Curve
 
-![F1 Curve](f1_curve.png)
+![F1 Curve](mask_f1_curve.png)
 
 
 
