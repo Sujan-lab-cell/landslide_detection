@@ -169,6 +169,14 @@ Key observations from training:
 | mAP@0.50 (Mask) | 0.731 |
 | mAP@0.50:0.95 (Mask) | 0.342 |
 
+### 📈 Performance Analysis
+
+- The model achieves high precision (0.84), indicating accurate detection of landslides.
+- Recall (0.80) shows most landslides are successfully identified.
+- Strong mAP@0.50 (0.83) indicates reliable object detection performance.
+- Lower mAP@0.50:0.95 (0.44) suggests room for improvement in precise localization.
+- Mask metrics confirm effective segmentation, though slightly lower recall indicates some missed regions.
+
 
 ### Confusion Matrix
 
