@@ -145,23 +145,7 @@ Training was performed using transfer learning from the COCO-pretrained YOLOv8 n
 Training and validation metrics were logged across all 100 epochs using Ultralytics' built-in logger.
 
 ### Training Graphs
-
-> 📊 *Place your training results image here — typically found at `results.png`*
-
-```
-runs/
-└── segment/
-    └── train21/
-        ├── results.png        ← Training curves (loss, mAP)
-        ├── weights/
-        │   └── best.pt        ← Best model checkpoint
-        └── ...
-```
-
-**To add your training graph:**
-```markdown
 ![Training Results](results.png)
-```
 
 Key observations from training:
 - Box loss and segmentation loss converged steadily after epoch 30.
@@ -172,18 +156,19 @@ Key observations from training:
 
 ## 📊 Model Performance Metrics
 
-### Evaluation on Test Set (40 images)
+### 📊 Evaluation on Test Set (40 images)
 
 | Metric | Value |
-|--------|-------|
-| Precision | — |
-| Recall | — |
-| mAP@0.50 (Box) | — |
-| mAP@0.50:0.95 (Box) | — |
-| mAP@0.50 (Mask) | — |
-| mAP@0.50:0.95 (Mask) | — |
+|--------|------|
+| Precision (Box) | 0.843 |
+| Recall (Box) | 0.802 |
+| mAP@0.50 (Box) | 0.837 |
+| mAP@0.50:0.95 (Box) | 0.448 |
+| Precision (Mask) | 0.844 |
+| Recall (Mask) | 0.679 |
+| mAP@0.50 (Mask) | 0.731 |
+| mAP@0.50:0.95 (Mask) | 0.342 |
 
-> 📌 *Fill in your actual metric values from `runs/segment/train21/` after evaluation.*
 
 ### Confusion Matrix
 
